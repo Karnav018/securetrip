@@ -3,461 +3,314 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Securetrip | Route Safety Monitor</title>
-    <meta name="description" content="Intelligent route safety analytics powered by historical accident data. Discover safer pathways for your journey.">
-
+    <title>Securetrip | Intelligent Route Safety</title>
+    <!-- Modern Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
     <style>
-        :root { --bg: #ffffff; --border: #000000; --accent-red: #ff0000; --accent-green: #00cc00; }
+        :root {
+            --bg-dark: #0a0c10;
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --accent-primary: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.5);
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+        }
 
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: var(--bg);
-            color: var(--border);
+            background-color: var(--bg-dark);
+            color: var(--text-main);
             overflow-x: hidden;
         }
 
-        /* ── NAV ──────────────────────────────────────── */
+        /* Navigation */
         nav {
             position: fixed;
             top: 0; width: 100%;
+            padding: 1.5rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.2rem 5%;
-            border-bottom: 2px solid var(--border);
-            background: var(--bg);
             z-index: 100;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--card-border);
         }
 
         .logo {
-            font-size: 0.85rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .nav-cta {
-            font-size: 0.7rem;
+            font-size: 1.5rem;
             font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, #fff, #a1a1aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-btn {
+            padding: 0.6rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
             text-decoration: none;
-            color: var(--bg);
-            background: var(--border);
-            padding: 0.6rem 1.4rem;
-            border: 2px solid var(--border);
-            transition: background 0.2s, color 0.2s;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: 1px solid var(--card-border);
         }
 
-        .nav-cta:hover {
-            background: var(--bg);
-            color: var(--border);
+        .nav-btn:hover {
+            background: #fff;
+            color: var(--bg-dark);
         }
 
-        /* ── HERO ─────────────────────────────────────── */
+        /* Hero Section */
         .hero {
+            position: relative;
             min-height: 100vh;
             display: flex;
             align-items: center;
+            justify-content: center;
             padding: 0 5%;
             padding-top: 80px;
-            border-bottom: 2px solid var(--border);
-            position: relative;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
             overflow: hidden;
         }
 
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0;
+        .hero-bg img {
             width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.4;
+            transform: scale(1.05);
+            transition: transform 10s ease-out;
+            animation: pulseBg 20s infinite alternate;
         }
 
-        .hero-left {
-            padding: 4rem 4rem 4rem 0;
-            border-right: 2px solid var(--border);
+        @keyframes pulseBg {
+            0% { transform: scale(1.05); }
+            100% { transform: scale(1.1); }
         }
 
-        .hero-right {
-            padding: 4rem 0 4rem 4rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; height: 50%;
+            background: linear-gradient(to top, var(--bg-dark), transparent);
+        }
+        
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, var(--bg-dark) 100%);
         }
 
-        .eyebrow {
-            font-size: 0.65rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: #666;
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+            z-index: 10;
+            animation: fadeUp 1s ease-out forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent-primary);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
             margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .hero h1 {
-            font-size: clamp(2.5rem, 5vw, 4.5rem);
-            font-weight: 900;
-            text-transform: uppercase;
-            line-height: 1;
-            letter-spacing: -1px;
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 800;
+            line-height: 1.1;
             margin-bottom: 1.5rem;
+            letter-spacing: -1px;
         }
 
-        .hero h1 .accent {
-            color: var(--accent-red);
+        .hero h1 span {
+            color: var(--accent-primary);
+            text-shadow: 0 0 40px var(--accent-glow);
         }
 
         .hero p {
-            font-size: 1rem;
-            line-height: 1.7;
-            color: #444;
-            max-width: 420px;
+            font-size: 1.25rem;
+            color: var(--text-muted);
             margin-bottom: 2.5rem;
-        }
-
-        .hero-cta {
-            display: inline-block;
-            background: var(--border);
-            color: var(--bg);
-            padding: 1rem 2.5rem;
-            text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border: 2px solid var(--border);
-            transition: background 0.2s, color 0.2s;
-            animation: pulse-border 2.5s infinite;
-        }
-
-        @keyframes pulse-border {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(0,0,0,0); }
-            50%       { box-shadow: 0 0 0 6px rgba(0,0,0,0.08); }
-        }
-
-        .hero-cta:hover {
-            background: var(--bg);
-            color: var(--border);
-        }
-
-        /* Stats bar inside hero right */
-        .stats-box {
-            width: 100%;
-            max-width: 360px;
-        }
-
-        .stat-item {
-            padding: 2rem 0;
-            border-bottom: 2px solid var(--border);
-        }
-
-        .stat-item:first-child {
-            border-top: 2px solid var(--border);
-        }
-
-        .stat-num {
-            font-size: 3rem;
-            font-weight: 900;
-            line-height: 1;
-            margin-bottom: 0.4rem;
-        }
-
-        .stat-num.red { color: var(--accent-red); }
-        .stat-num.green { color: var(--accent-green); }
-
-        .stat-label {
-            font-size: 0.65rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #666;
-        }
-
-        /* ── FEATURES ─────────────────────────────────── */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            border-bottom: 2px solid var(--border);
-        }
-
-        .feature-card {
-            padding: 3rem 2.5rem;
-            border-right: 2px solid var(--border);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-
-        .feature-card:last-child { border-right: none; }
-        .feature-card.visible { opacity: 1; transform: translateY(0); }
-
-        .feature-num {
-            font-size: 0.6rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: #999;
-            margin-bottom: 1.5rem;
-        }
-
-        .feature-card h3 {
-            font-size: 1.1rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 1rem;
-        }
-
-        .feature-card p {
-            font-size: 0.9rem;
-            line-height: 1.7;
-            color: #555;
-        }
-
-        /* ── HOW IT WORKS ─────────────────────────────── */
-        .how {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            border-bottom: 2px solid var(--border);
-        }
-
-        .how-label {
-            padding: 3rem 2.5rem;
-            border-right: 2px solid var(--border);
-            display: flex;
-            align-items: flex-start;
-        }
-
-        .how-label span {
-            font-size: 0.65rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: #999;
-        }
-
-        .how-steps {
-            padding: 3rem 2.5rem;
-        }
-
-        .step {
-            display: flex;
-            gap: 1.5rem;
-            align-items: flex-start;
-            padding: 1.5rem 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .step:last-child { border-bottom: none; }
-
-        .step-num {
-            font-size: 0.65rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #999;
-            min-width: 40px;
-            padding-top: 3px;
-        }
-
-        .step-text h4 {
-            font-size: 1rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.4rem;
-        }
-
-        .step-text p {
-            font-size: 0.85rem;
-            color: #555;
+            font-weight: 300;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
             line-height: 1.6;
         }
 
-        /* ── CTA BANNER ───────────────────────────────── */
-        .cta-banner {
-            display: flex;
+        .cta-btn {
+            display: inline-flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 4rem 5%;
-            background: var(--border);
-            color: var(--bg);
-            flex-wrap: wrap;
-            gap: 2rem;
-        }
-
-        .cta-banner h2 {
-            font-size: clamp(1.5rem, 3vw, 2.5rem);
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: -0.5px;
-            max-width: 600px;
-        }
-
-        .cta-banner a {
-            display: inline-block;
-            background: var(--bg);
-            color: var(--border);
-            padding: 1rem 2.5rem;
+            gap: 10px;
+            background: var(--accent-primary);
+            color: #fff;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
             text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border: 2px solid var(--bg);
-            white-space: nowrap;
-            transition: background 0.2s, color 0.2s;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 30px var(--accent-glow);
         }
 
-        .cta-banner a:hover {
-            background: var(--border);
-            color: var(--bg);
-            border-color: var(--bg);
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px var(--accent-glow);
+            background: #2563eb;
         }
 
-        /* ── FOOTER ───────────────────────────────────── */
-        footer {
+        .cta-btn svg {
+            width: 20px; height: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .cta-btn:hover svg {
+            transform: translateX(5px);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 5rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 2.5rem;
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .icon-wrapper {
+            width: 60px; height: 60px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 15px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 1.5rem 5%;
-            border-top: 2px solid var(--border);
-            font-size: 0.65rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #888;
-            flex-wrap: wrap;
-            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: var(--accent-primary);
         }
 
-        /* ── RESPONSIVE ───────────────────────────────── */
-        @media (max-width: 768px) {
-            .hero-grid { grid-template-columns: 1fr; }
-            .hero-left { border-right: none; border-bottom: 2px solid var(--border); padding: 3rem 0; }
-            .hero-right { padding: 3rem 0; }
-            .features { grid-template-columns: 1fr; }
-            .feature-card { border-right: none; border-bottom: 2px solid var(--border); }
-            .feature-card:last-child { border-bottom: none; }
-            .how { grid-template-columns: 1fr; }
-            .how-label { border-right: none; border-bottom: 2px solid var(--border); }
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-weight: 300;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            color: var(--text-muted);
+            border-top: 1px solid var(--card-border);
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
 
-    <!-- NAV -->
     <nav>
         <div class="logo">Securetrip</div>
-        <a href="app.html" class="nav-cta">Launch App &rarr;</a>
+        <a href="app.html" class="nav-btn">Open App</a>
     </nav>
 
-    <!-- HERO -->
     <section class="hero">
-        <div class="hero-grid">
-            <div class="hero-left">
-                <p class="eyebrow">Safety Analytics V3</p>
-                <h1>Navigate with <span class="accent">Confidence</span></h1>
-                <p>Advanced route analytics powered by historical accident data. We surface the risk you can't see and guide you toward safer alternatives.</p>
-                <a href="app.html" class="hero-cta">Analyze Your Route</a>
-            </div>
-            <div class="hero-right">
-                <div class="stats-box">
-                    <div class="stat-item">
-                        <div class="stat-num red">01</div>
-                        <div class="stat-label">Primary Route — Accident Prone</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-num green">02</div>
-                        <div class="stat-label">Alternative Route — Verified Safe</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-num">100%</div>
-                        <div class="stat-label">Client-side — Zero Data Leaks</div>
-                    </div>
-                </div>
-            </div>
+        <div class="hero-bg">
+            <img src="hero-bg.png" alt="Glowing City Map Routes">
+        </div>
+        <div class="hero-content">
+            <div class="badge">Safety Analytics V3</div>
+            <h1>Navigate with <span>Confidence</span></h1>
+            <p>Advanced route analytics powered by historical accident data. Discover alternative pathways specifically engineered to minimize your risk on the road.</p>
+            
+            <a href="app.html" class="cta-btn">
+                Launch Platform
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </a>
         </div>
     </section>
 
-    <!-- FEATURES -->
     <section class="features">
-        <div class="feature-card">
-            <div class="feature-num">01 &mdash; Detection</div>
+        <div class="feature-card" style="animation: fadeUp 1s ease-out 0.2s forwards; opacity: 0;">
+            <div class="icon-wrapper">
+                <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            </div>
             <h3>Accident Hotspots</h3>
-            <p>Our system identifies high-risk segments on your route using years of historical incident reports and precisely marks each known accident point.</p>
+            <p>Our algorithm identifies high-risk segments on your primary route using years of historical incident reports to quantify safety.</p>
         </div>
-        <div class="feature-card">
-            <div class="feature-num">02 &mdash; Routing</div>
+
+        <div class="feature-card" style="animation: fadeUp 1s ease-out 0.4s forwards; opacity: 0;">
+            <div class="icon-wrapper">
+                <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
+            </div>
             <h3>Safe Alternatives</h3>
-            <p>When a dangerous route is detected, the system automatically computes an alternative path, visualized in real-time on an interactive map.</p>
+            <p>If your route is deemed dangerous, the system automatically calculates and highlights a detour specifically optimized to avoid hazardous areas.</p>
         </div>
-        <div class="feature-card">
-            <div class="feature-num">03 &mdash; Speed</div>
-            <h3>Instant Results</h3>
-            <p>All computation runs directly in your browser. No server round-trips, no waits. Enter your origin and destination and see results immediately.</p>
+
+        <div class="feature-card" style="animation: fadeUp 1s ease-out 0.6s forwards; opacity: 0;">
+            <div class="icon-wrapper">
+                <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            </div>
+            <h3>Real-Time Processing</h3>
+            <p>Extremely fast client-side computation ensuring instant visual feedback on interactive Google Maps integrated directly in the dashboard.</p>
         </div>
     </section>
 
-    <!-- HOW IT WORKS -->
-    <section class="how">
-        <div class="how-label">
-            <span>How It Works</span>
-        </div>
-        <div class="how-steps">
-            <div class="step">
-                <div class="step-num">Step 01</div>
-                <div class="step-text">
-                    <h4>Enter Your Journey</h4>
-                    <p>Type an origin and a destination from the available city list in the Anand district dataset.</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-num">Step 02</div>
-                <div class="step-text">
-                    <h4>Analyze Safety</h4>
-                    <p>The platform cross-references your route against recorded accident data pinpointing every historical incident on the road.</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-num">Step 03</div>
-                <div class="step-text">
-                    <h4>Navigate Safely</h4>
-                    <p>Review the primary (red) danger route and the suggested green safe alternative before you start your trip.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA BANNER -->
-    <div class="cta-banner">
-        <h2>Ready to Check Your Route?</h2>
-        <a href="app.html">Open Platform &rarr;</a>
-    </div>
-
-    <!-- FOOTER -->
     <footer>
-        <span>Securetrip &mdash; Safety Analytics V3</span>
-        <span>&copy; 2026. All Rights Reserved.</span>
+        <p>&copy; 2026 Securetrip Analytics. Designed for Safer Roads.</p>
     </footer>
-
-    <script>
-        // Intersection Observer for feature cards fade-in
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, i) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => entry.target.classList.add('visible'), i * 120);
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.15 });
-
-        document.querySelectorAll('.feature-card').forEach(card => observer.observe(card));
-    </script>
 
 </body>
 </html>
